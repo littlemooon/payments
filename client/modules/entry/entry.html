@@ -24,7 +24,7 @@
 			<td>{{e.date}}</td>
 			<td>{{e.amount | currency}}</td>
 			<td>{{e.description}}</td>
-			<td ng-show="isEdit(false)">{{categories[e.categoryId].description}}</td>
+			<td ng-show="isEdit(false)">{{categoryDescription(e)}}</td>
 			<td ng-show="isEdit(true)">
 				<select ng-model="e.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" ng-blur="updateEntry(e)" class="form-control input-sm"></select>
 			</td>

@@ -5,6 +5,8 @@
  */
 
 var config = require('./server/config/config'),
+    mongo = require('./server/config/mongo'),
+    mongoSeed = require('./server/config/mongo-seed'),
     koaConfig = require('./server/config/koa'),
     co = require('co'),
     koa = require('koa'),
@@ -13,10 +15,14 @@ var config = require('./server/config/config'),
 module.exports = app;
 
 app.init = co(function *() {
-  // koa config
+	// mongo
+  yield mongo.connect();
+  yield mongoSeed();
+
+  // koa
   koaConfig(app);
 
-  // create http server and start listening for requests
+  // http server
   app.server = app.listen(config.app.port);
 });
 

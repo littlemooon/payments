@@ -2,7 +2,9 @@
 
 var route = require('koa-route'),
     parse = require('co-body'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    mongo = require('../config/mongo'),
+    ObjectID = mongo.ObjectID;
 
 // register koa routes
 exports.init = function (app) {
@@ -13,6 +15,13 @@ exports.init = function (app) {
 };
 
 function *listEntries() {
+  var entries = yield mongo.entries.find().toArray();
+
+  entries.forEach(function (entry) {
+    entry.id = entry._id;
+    delete entry._id;
+  });
+
   this.body = _.filter(entries, {'deletedTime': undefined});
 }
 
@@ -20,60 +29,37 @@ function *createEntry() {
   var entry = yield parse(this);
 
   entry.createdTime = new Date();
-  entry.id = entries.length;
-
-  entries.push(entry);
+  var results = yield mongo.entries.insert(entry);
 
   this.status = 201;
+  this.body = results[0]._id.toString();
+
+  entry.id = entry._id;
+  delete entry._id;
 }
 
 function *updateEntry(id) {
   var entry = yield parse(this);
-  console.log('****** ' + id);
-  var index = findWithId(entries, id);
-  if (index > -1) entries[index] = entry;
+  id = ObjectID(id);
+
+  entry = {
+    _id: id, 
+    createdTime: new Date(), 
+    bank: entry.bank, 
+    amount: entry.amount, 
+    description: entry.description, 
+    categoryID: entry.categoryID
+  };
+
+  yield mongo.entries.update({_id:id}, entry);
 
   this.status = 201;
 }
 
 function *deleteEntry(id) {
-  var index = findWithId(entries, id);
-  if (index > -1) entries[index].deletedTime = new Date();
+  id = ObjectID(id);
+
+  yield mongo.entries.update({_id:id}, {$set: {deletedTime: new Date()}});
 
   this.status = 201;
 }
-
-function findWithId(array, id) {
-  for(var i = 0; i < array.length; i += 1) {
-    if(array[i].id == id) {
-      return i;
-    }
-  }
-}
-
-
-var entries = [
-  {
-    id: 0,
-    bank: 'hsbc',
-    date: '12-12-12',
-    amount: 12.00,
-    description: 'Sainsburys',
-    categoryId: 1
-  },
-  {
-    id: 1,
-    bank: 'hsbc',
-    date: '13-13-13',
-    amount: 13.00,
-    description: 'Sports Direct',
-    categoryId: 2
-  },
-  {
-    id: 2,
-    bank: 'firstdirect',
-    date: '14-14-14',
-    amount: 14.00,
-    description: 'Tesco'
-  }
-]

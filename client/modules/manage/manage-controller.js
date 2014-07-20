@@ -26,6 +26,9 @@ angular.module('app.manage').controller('ManageCtrl', function($scope, $state, $
     success(function(entries) {
       $scope.entries =  entries;
     });
+  $scope.categoryDescription = function(entry) {
+    return _.filter($scope.categories, {'id': entry.categoryId})[0].description;
+  };
 
   $scope.newEntry = {};
 

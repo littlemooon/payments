@@ -5,6 +5,7 @@
     "bootstrap": "latest",
     "angular": "latest",
     "angular-ui-router": "~0.2.10",
-    "ng-flow": "~2"
+    "ng-flow": "~2",
+    "lodash": "~2.4.1"
   }
 }

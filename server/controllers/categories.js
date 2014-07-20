@@ -2,7 +2,9 @@
 
 var route = require('koa-route'),
     parse = require('co-body'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    mongo = require('../config/mongo'),
+    ObjectID = mongo.ObjectID;
 
 // register koa routes
 exports.init = function (app) {
@@ -13,6 +15,13 @@ exports.init = function (app) {
 };
 
 function *listCategories() {
+  var categories = yield mongo.categories.find().toArray();
+
+  categories.forEach(function (category) {
+    category.id = category._id;
+    delete category._id;
+  });
+
   this.body = _.filter(categories, {'deletedTime': undefined});
 }
 
@@ -20,45 +29,29 @@ function *createCategory() {
   var category = yield parse(this);
 
   category.createdTime = new Date();
-  category.id = categories.length;
-
-  categories.push(category);
+  var results = yield mongo.categories.insert(category);
 
   this.status = 201;
+  this.body = results[0]._id.toString();
+
+  category.id = category._id;
+  delete category._id;
 }
 
 function *updateCategory(id) {
   var category = yield parse(this);
+  id = ObjectID(id);
 
-  var index = findWithId(categories, id);
-  if (index > -1) categories[index] = category;
+  category = {_id: id, createdTime: new Date(), description: category.description};
+  var result = yield mongo.categories.update({_id: id}, category);
 
   this.status = 201;
 }
 
 function *deleteCategory(id) {
-  var index = findWithId(categories, id);
-  if (index > -1) categories[index].deletedTime = new Date();
+  id = ObjectID(id);
+
+  yield mongo.categories.update({_id: id}, {$set: {deletedTime: new Date()}});
 
   this.status = 201;
 }
-
-function findWithId(array, id) {
-  for(var i = 0; i < array.length; i += 1) {
-    if(array[i].id == id) {
-      return i;
-    }
-  }
-}
-
-
-var categories = [
-  {
-    id: 0,
-    description: 'food'
-  },
-  {
-    id: 1,
-    description: 'clothes'
-  }
-]
