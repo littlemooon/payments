@@ -1,0 +1,57 @@
+<div flow-init 
+		 flow-prevent-drop
+     flow-drag-enter="style={border: '5px solid green'}"
+	   flow-drag-leave="style={}"
+	   ng-style="style">
+  <div class="container">
+		<div class="row">
+			<h1>Upload</h1>
+		  <hr class="soften">
+		</div>
+		<div class="row">
+	    <button class="btn btn-small btn-default" flow-btn flow-directory>Add Files</button>
+	    <button class="btn btn-small btn-success" ng-click="$flow.resume()">Upload</button>
+	    <button class="btn btn-small btn-danger" ng-click="$flow.pause()">Pause</button>
+	    <button class="btn btn-small btn-info" ng-click="$flow.cancel()">Cancel</button>
+	  	<hr class="soften">
+		</div>
+
+	  <div class="row">
+		  <table class="table table-hover" flow-transfers>
+		    <thead>
+			    <tr>
+			      <th>Name</th>
+			      <th>Paused</th>
+			      <th>Uploading</th>
+			      <th>Completed</th>
+			      <th></th>
+			    </tr>
+		    </thead>
+		    <tbody>
+			    <tr ng-repeat="file in transfers">
+			      <td>{{file.name}}</td>
+			      <td>{{file.paused}}</td>
+			      <td>{{file.isUploading()}}</td>
+			      <td>{{file.isComplete()}}</td>
+			      <td>
+			        <div class="btn-group">
+			          <a class="btn btn-mini btn-warning" ng-click="file.pause()" ng-hide="file.paused">
+			            Pause
+			          </a>
+			          <a class="btn btn-mini btn-warning" ng-click="file.resume()" ng-show="file.paused">
+			            Resume
+			          </a>
+			          <a class="btn btn-mini btn-danger" ng-click="file.cancel()">
+			            Cancel
+			          </a>
+			          <a class="btn btn-mini btn-info" ng-click="file.retry()" ng-show="file.error">
+			            Retry
+			          </a>
+			        </div>
+			      </td>
+			    </tr>
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+</div>

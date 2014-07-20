@@ -1,0 +1,34 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Bank</th>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="isEdit(true)">
+      <td><input type="text" ng-model="newEntry.bank" class="form-control input-sm"/></td>
+      <td><input type="text" ng-model="newEntry.date" class="form-control input-sm"/></td>
+      <td><input type="text" ng-model="newEntry.amount" class="form-control input-sm"/></td>
+      <td><input type="text" ng-model="newEntry.description" class="form-control input-sm"/></td>
+      <td ng-show="isEdit(true)">
+        <select ng-model="newEntry.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm" required></select>
+      </td>
+      <td><button type="button" class="btn btn-success" ng-click="addEntry(newEntry)">Add</button></td>
+    </tr>
+		<tr ng-repeat="e in entries">
+			<td>{{e.bank | uppercase}}</td>
+			<td>{{e.date}}</td>
+			<td>{{e.amount | currency}}</td>
+			<td>{{e.description}}</td>
+			<td ng-show="isEdit(false)">{{categories[e.categoryId].description}}</td>
+			<td ng-show="isEdit(true)">
+				<select ng-model="e.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" ng-blur="updateEntry(e)" class="form-control input-sm"></select>
+			</td>
+      <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger" ng-click="deleteEntry(e)">Delete</button></td>
+		</tr>
+	</tbody>
+</table>

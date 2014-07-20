@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" ng-app="app" >
+<head>
+	<meta charset="UTF-8">
+	<base href="/">
+
+	<title>PandaPay</title>
+
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body ng-controller="AppCtrl">
+<div class="container">
+	
+	<div class="collapse navbar-collapse">
+		<div class="navbar-header">
+			<a class="navbar-brand" ng-class="{active:isActive(mainPage.route)}" ui-sref={{mainPage.route}}>{{mainPage.name}}</a>
+		</div>
+	  <ul class="nav navbar-nav">
+			<li ng-repeat="p in pages" ng-class="{active:isActive(p.route)}">
+				<a ui-sref={{p.route}}>{{p.name}}</a>
+			</li>
+	  </ul>
+	</div>
+
+	<div ui-view></div>
+
+</div>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+	<script src="app.js"></script>
+	<script src="app-controller.js"></script>
+	<script src="modules/dash/dash.js"></script>
+	<script src="modules/dash/dash-controller.js"></script>
+	<script src="modules/manage/manage.js"></script>
+	<script src="modules/manage/manage-controller.js"></script>
+	<script src="modules/entry/entry.js"></script>
+	<script src="modules/entry/entry-service.js"></script>
+	<script src="modules/category/category.js"></script>
+	<script src="modules/category/category-service.js"></script>
+	<script src="modules/upload/upload.js"></script>
+	<script src="modules/upload/upload-controller.js"></script>
+</body>
+
+</html>
