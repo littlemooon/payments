@@ -15,14 +15,14 @@ exports.init = function (app) {
 };
 
 function *listCategories() {
-  var categories = yield mongo.categories.find().toArray();
+  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).toArray();
 
   categories.forEach(function (category) {
     category.id = category._id;
     delete category._id;
   });
 
-  this.body = _.filter(categories, {'deletedTime': undefined});
+  this.body = categories;
 }
 
 function *createCategory() {

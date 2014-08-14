@@ -27,7 +27,15 @@ angular.module('app.manage').controller('ManageCtrl', function($scope, $state, $
       $scope.entries =  entries;
     });
   $scope.categoryDescription = function(entry) {
-    return _.filter($scope.categories, {'id': entry.categoryId})[0].description;
+    if (entry.categoryId === undefined) return '';
+
+    var category = _.filter($scope.categories, {
+      'id': entry.categoryId
+    })[0]
+
+    if (category === undefined) return ''; 
+
+    return category.description;
   };
 
   $scope.newEntry = {};

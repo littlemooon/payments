@@ -1,5 +1,32 @@
-<div class="jumbotron text-center">
-	<h1>Dash</h1>
 
-	<p>{{ tagline }}</p>
+
+<div>
+  <div class="container">
+		<div class="row">
+			<h1>Dashboard</h1>
+		  <hr class="soften">
+		</div>
+	  
+		<section class="row"> 
+			<h2>Balance</h2>
+		  <hr class="soften">
+    	<nvd3 options="cumulativeOptions" data="cumulativeData"></nvd3>
+		</section>
+		<section class="row"> 
+			<h2>Category Totals</h2>
+		  <hr class="soften">
+		 	<div class="col-md-6">
+    		<nvd3 options="pieOptions" data="pieData"></nvd3>
+ 	 		</div>
+		 	<div class="col-md-6">
+		    <nvd3 options="pieOptions" data="pieData"></nvd3>
+		  </div>
+		</section>
+		<section class="row"> 
+			<h2>Categories Over Time</h2>
+		  <hr class="soften">
+		 	<nvd3 options="timeOptions" data="timeData"></nvd3>
+		 	<nvd3 options="timeOptions" data="timeData"></nvd3>
+		</section>
+ 	</div>
 </div>

@@ -15,14 +15,14 @@ exports.init = function (app) {
 };
 
 function *listEntries() {
-  var entries = yield mongo.entries.find().toArray();
+  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
 
   entries.forEach(function (entry) {
     entry.id = entry._id;
     delete entry._id;
   });
 
-  this.body = _.filter(entries, {'deletedTime': undefined});
+  this.body = entries;
 }
 
 function *createEntry() {

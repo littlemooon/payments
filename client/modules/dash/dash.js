@@ -1,6 +1,8 @@
 angular
   .module('app.dash', [
-    'ui.router'
+    'ui.router',
+    'nvd3',
+    'app.graphData'
   ])
   .config(function($stateProvider) {
     $stateProvider
