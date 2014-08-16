@@ -8,25 +8,14 @@
 		</div>
 	  
 		<section class="row"> 
-			<h2>Balance</h2>
-		  <hr class="soften">
-    	<nvd3 options="cumulativeOptions" data="cumulativeData"></nvd3>
+      <div ui-view="balanceGraph"></div>
+			</script>
 		</section>
 		<section class="row"> 
-			<h2>Category Totals</h2>
-		  <hr class="soften">
-		 	<div class="col-md-6">
-    		<nvd3 options="pieOptions" data="pieData"></nvd3>
- 	 		</div>
-		 	<div class="col-md-6">
-		    <nvd3 options="pieOptions" data="pieData"></nvd3>
-		  </div>
+			<div ui-view="totalGraph"></div>
 		</section>
 		<section class="row"> 
-			<h2>Categories Over Time</h2>
-		  <hr class="soften">
-		 	<nvd3 options="timeOptions" data="timeData"></nvd3>
-		 	<nvd3 options="timeOptions" data="timeData"></nvd3>
+      <div ui-view="timeGraph"></div>
 		</section>
  	</div>
 </div>

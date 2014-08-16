@@ -43,12 +43,13 @@ function *updateEntry(id) {
   id = ObjectID(id);
 
   entry = {
-    _id: id, 
+    _id: id,
     createdTime: new Date(), 
     bank: entry.bank, 
+    date: entry.date,
     amount: entry.amount, 
     description: entry.description, 
-    categoryID: entry.categoryID
+    categoryId: entry.categoryId
   };
 
   yield mongo.entries.update({_id:id}, entry);

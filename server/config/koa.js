@@ -33,6 +33,6 @@ module.exports = function (app) {
 
   // mount all the routes defined in the api controllers
   fs.readdirSync('./server/controllers').forEach(function (file) {
-    require('../controllers/' + file).init(app);
+    if (file.substr(-3) === '.js') require('../controllers/' + file).init(app);
   });
 };

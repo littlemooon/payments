@@ -1,2 +1,4 @@
 angular
-  .module('app.entry', []);
+  .module('app.entry', [
+  	'app.category'
+	]);

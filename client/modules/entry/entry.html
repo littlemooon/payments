@@ -26,7 +26,7 @@
 			<td>{{e.description}}</td>
 			<td ng-show="isEdit(false)">{{categoryDescription(e)}}</td>
 			<td ng-show="isEdit(true)">
-				<select ng-model="e.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" ng-blur="updateEntry(e)" class="form-control input-sm"></select>
+				<select ng-model="e.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categoryOptions(e)" ng-blur="updateEntry(e)" class="form-control input-sm"></select>
 			</td>
       <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger" ng-click="deleteEntry(e)">Delete</button></td>
 		</tr>

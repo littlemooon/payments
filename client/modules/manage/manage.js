@@ -15,11 +15,13 @@ angular
       })
         .state("manage.entries", { 
           url: "", 
-          templateUrl: 'modules/entry/entry.html'
+          templateUrl: 'modules/entry/entry.html',
+          controller: 'EntryCtrl'
         })
         .state("manage.categories", { 
           url: '/categories',
-          templateUrl: 'modules/category/category.html'
+          templateUrl: 'modules/category/category.html',
+          controller: 'CategoryCtrl'
         })
         .state("manage.defaults", { 
           url: "/defaults"
