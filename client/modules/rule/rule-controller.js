@@ -9,14 +9,8 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
       $scope.categories =  categories;
     });
 
-  $scope.properties = [
-    'Date',
-    'Description'
-  ];
-  $scope.operators = [
-    'is',
-    'is not'
-  ];
+  $scope.properties = properties;
+  $scope.operators = operators;
 
   $scope.newRule = {
     property: $scope.properties && $scope.properties[0],
@@ -48,4 +42,66 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
 
     return (category && category.description) || '';
   };
+
+  $scope.operatorOptions = function(rule) {
+    var operators = _.filter($scope.operators, function(operator) {
+      var match = false
+      _.forEach(rule.property.operators, function(operatorId) {
+        if (operator.id == operatorId) match = true;
+      });
+      return match;
+    })
+
+    return operators;
+  };
 });
+
+var properties = [
+  {
+    name: 'description',
+    description: 'Description',
+    operators: [0, 1, 2, 3]
+  },
+  {
+    name: 'amount',
+    description: 'Amount',
+    operators: [4, 5, 6]
+  }
+];
+var operators = [
+  {
+    id: 0,
+    name: 'is',
+    description: 'is'
+  },
+  {
+    id: 1,
+    name: 'startsWith',
+    description: 'starts with'
+  },
+  {
+    id: 2,
+    name: 'endsWith',
+    description: 'ends with'
+  },
+  {
+    id: 3,
+    name: 'contains',
+    description: 'contains'
+  },
+  {
+    id: 4,
+    name: 'equals',
+    description: 'equals'
+  },
+  {
+    id: 5,
+    name: 'greaterThan',
+    description: 'is greater than'
+  },
+  {
+    id: 6,
+    name: 'lessThan',
+    description: 'is less than'
+  }
+];

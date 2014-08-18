@@ -67,7 +67,7 @@ function *deleteRule(id) {
 function *applyRules() {
   var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
   var rules = yield mongo.rules.find({"deletedTime": {"$exists": false}}).toArray();
-  console.log(rules)
+
   var changes = _.reduce(entries, function(changes, entry, i) {
     _.every(rules, function(rule) {
       if (applyRule(rule, entry)) {
@@ -93,8 +93,32 @@ function *applyRules() {
 }
 
 function applyRule(rule, entry) {
-  if (entry[rule.property.toLowerCase()] !== rule.value) {
-    return true;
-  }
-  return false;
+  if (rule.operator.name === 'is') return is(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'startsWith') return startsWith(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'endsWith') return endsWith(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'contains') return contains(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'equals') return equals(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'greaterThan') return isGreaterThan(entry[rule.property.name], rule.value);
+  if (rule.operator.name === 'lessThan') return isLessThan(entry[rule.property.name], rule.value);
+}
+function is(string, comparison) {
+  return string === comparison;
+}
+function startsWith(string, comparison) {
+  return string.slice(0, comparison.length) === comparison;
+}
+function endsWith(string, comparison) {
+  return string.slice(-comparison.length) === comparison;
+}
+function contains(string, comparison) {
+  return string.indexOf(comparison) > -1;
+}
+function equals(number, comparison) {
+  return parseFloat(number) === parseFloat(comparison);
+}
+function isGreaterThan(number, comparison) {
+  return parseFloat(number) > parseFloat(comparison);
+}
+function isLessThan(number, comparison) {
+  return parseFloat(number) < parseFloat(comparison);
 }
