@@ -68,14 +68,11 @@ function *applyRules() {
   var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
   var rules = yield mongo.rules.find({"deletedTime": {"$exists": false}}).toArray();
 
-  var changes = _.reduce(entries, function(acc, entry, i) {
+  var changes = _.reduce(entries, function(changes, entry, i) {
     _.forEach(rules, function(rule) {
-      if (entry.categoryId !== rule.categoryId && entry[rule.property.toLowerCase()] !== rule.value) {
-        acc[rule.categoryId] = acc[rule.categoryId] || [];
-        return acc[rule.categoryId].push(entry._id);
-      }
+      return changes = applyRule(changes, rule, entry);
     })
-    return acc;
+    return changes;
   }, {});
 
   for (var categoryId in changes) {
@@ -87,4 +84,13 @@ function *applyRules() {
   }
 
   this.status = 201;
+}
+
+function applyRule(changes, rule, entry) {
+  if (entry[rule.property.toLowerCase()] !== rule.value) {
+    if (entry.categoryId === rule.categoryId) return;
+    changes[rule.categoryId] = changes[rule.categoryId] || [];
+    changes[rule.categoryId].push(entry._id);
+  }
+  return changes;
 }
