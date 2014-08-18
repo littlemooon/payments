@@ -93,32 +93,28 @@ function *applyRules() {
 }
 
 function applyRule(rule, entry) {
-  if (rule.operator.name === 'is') return is(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'startsWith') return startsWith(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'endsWith') return endsWith(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'contains') return contains(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'equals') return equals(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'greaterThan') return isGreaterThan(entry[rule.property.name], rule.value);
-  if (rule.operator.name === 'lessThan') return isLessThan(entry[rule.property.name], rule.value);
+  return operations[rule.operator.name](entry[rule.property.name], rule.value);
 }
-function is(string, comparison) {
-  return string === comparison;
-}
-function startsWith(string, comparison) {
-  return string.slice(0, comparison.length) === comparison;
-}
-function endsWith(string, comparison) {
-  return string.slice(-comparison.length) === comparison;
-}
-function contains(string, comparison) {
-  return string.indexOf(comparison) > -1;
-}
-function equals(number, comparison) {
-  return parseFloat(number) === parseFloat(comparison);
-}
-function isGreaterThan(number, comparison) {
-  return parseFloat(number) > parseFloat(comparison);
-}
-function isLessThan(number, comparison) {
-  return parseFloat(number) < parseFloat(comparison);
+var operations = {
+  'is': function(string, comparison) {
+    return string === comparison;
+  },
+  'startsWith': function(string, comparison) {
+    return string.slice(0, comparison.length) === comparison;
+  },
+  'endsWith': function(string, comparison) {
+    return string.slice(-comparison.length) === comparison;
+  },
+  'contains': function(string, comparison) {
+    return string.indexOf(comparison) > -1;
+  },
+  'equals': function(number, comparison) {
+    return parseFloat(number) === parseFloat(comparison);
+  },
+  'greaterThan': function(number, comparison) {
+    return parseFloat(number) > parseFloat(comparison);
+  },
+  'lessThan': function(number, comparison) {
+    return parseFloat(number) < parseFloat(comparison);
+  }
 }
