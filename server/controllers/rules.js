@@ -68,17 +68,8 @@ function *applyRules() {
   var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
   var rules = yield mongo.rules.find({"deletedTime": {"$exists": false}}).toArray();
 
-  var changes = _.reduce(entries, function(changes, entry, i) {
-    _.every(rules, function(rule) {
-      if (applyRule(rule, entry)) {
-        if (entry.categoryId === rule.categoryId) return false;
-        changes[rule.categoryId] = changes[rule.categoryId] || [];
-        changes[rule.categoryId].push(entry._id);
-        return false;
-      }
-      return true;
-    })
-    return changes;
+  var changes = _.reduce(entries, function(changes, entry) {
+    return getChanges(changes, rules, entry);
   }, {});
 
   for (var categoryId in changes) {
@@ -92,9 +83,23 @@ function *applyRules() {
   this.status = 201;
 }
 
+function getChanges(changes, rules, entry) {
+  _.every(rules, function(rule) {
+    if (applyRule(rule, entry)) {
+      if (entry.categoryId === rule.categoryId) return false;
+      changes[rule.categoryId] = changes[rule.categoryId] || [];
+      changes[rule.categoryId].push(entry._id);
+      return false;
+    }
+    return true;
+  });
+  return changes;
+}
+
 function applyRule(rule, entry) {
   return operations[rule.operator.name](entry[rule.property.name], rule.value);
 }
+
 var operations = {
   'is': function(string, comparison) {
     return string === comparison;
