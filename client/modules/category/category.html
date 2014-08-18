@@ -2,12 +2,14 @@
   <thead>
     <tr>
       <th>Description</th>
-      <th></th>
+      <th>Type</th>
+      <th ng-show="isEdit(true)"></th>
     </tr>
   </thead>
   <tbody>
     <tr ng-show="isEdit(true)">
       <td><input type="text" ng-model="newCategory.description" class="form-control input-sm"/></td>
+      <td><select ng-model="newCategory.type" ng-selected="0" ng-options="t for t in types" class="form-control input-sm"></select></td>
       <td><button type="button" class="btn btn-success" ng-click="addCategory(newCategory)">Add</button></td>
     </tr>
 		<tr ng-repeat="c in categories">

@@ -27,12 +27,21 @@ function *dataOutgoing() {
 }
 
 function *getEntries(type) {
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
+  var entries = [];
   if (type == 'Incoming') {
+    entries = yield mongo.entries.find({
+      "deletedTime": {"$exists": false},
+      "amount": { "$lt": 0 }
+    }).sort({date: 1}).toArray();
     entries = _.map(entries, function(entry) {
       entry.amount = entry.amount *-1;
       return entry;
     });
+  } else {
+    entries = yield mongo.entries.find({
+      "deletedTime": {"$exists": false},
+      "amount": { "$gt": 0 }
+    }).sort({date: 1}).toArray();
   }
   return entries;
 }
@@ -48,8 +57,8 @@ function getData(entries, categories) {
   // Group amounts for each category by date
   var amountsByDate = {};
   _.each(entries, function(entry) {
-    var date = parseInt(entry.date);
-    var amount = parseInt(entry.amount);
+    var date = entry.date;
+    var amount = entry.amount;
 
     if (!amountsByDate[date]) amountsByDate[date] = [];
     var index = _.findIndex(categories, function(category){
@@ -67,7 +76,8 @@ function getData(entries, categories) {
       var amount = amountsByDate[date][i] || 0;
       dataForCategory.push([parseInt(date), amount]);
     }
-    
+    console.log(dataForCategory);
+
     return{
       "key": category.description,
       "values": dataForCategory

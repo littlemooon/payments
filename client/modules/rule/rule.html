@@ -1,0 +1,36 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th></th>
+      <th>Value</th>
+      <th></th>
+      <th>Category</th>
+      <th ng-show="isEdit(true)"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-show="isEdit(true)">
+      <td><select ng-model="newRule.property" ng-selected="0" ng-options="p for p in properties" class="form-control input-sm"></select></td>
+      <td><select ng-model="newRule.operator" ng-selected="0" ng-options="o for o in operators" class="form-control input-sm"></select></td>
+      <td><input type="text" ng-model="newRule.value" money type="number" class="form-control input-sm"/></td>
+      <td>=</td>
+      <td><select ng-model="newRule.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm"></select></td>
+      <td><button type="button" class="btn btn-success" ng-click="addRule(newRule)">Add</button></td>
+    </tr>
+    <tr ng-repeat="r in rules">
+      <td ng-show="isEdit(false)">{{r.property}}</td>
+      <td ng-show="isEdit(true)"><select ng-model="r.property" ng-blur="updateRule(r)" ng-selected="0" ng-options="p for p in properties" class="form-control input-sm"></select></td>
+      <td ng-show="isEdit(false)">{{r.operator}}</td>
+      <td ng-show="isEdit(true)"><select ng-model="r.operator" ng-blur="updateRule(r)" ng-selected="0" ng-options="o for o in operators" class="form-control input-sm"></select></td>
+      <td ng-show="isEdit(false)">{{r.value}}</td>
+      <td ng-show="isEdit(true)"><input type="text" ng-model="r.value" ng-blur="updateRule(r)" class="form-control input-sm"/></td>
+      <td>=</td>
+      <td ng-show="isEdit(false)">{{categoryDescription(r)}}</td>
+      <td ng-show="isEdit(true)">
+        <select ng-model="r.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" ng-blur="updateRule(r)" class="form-control input-sm"></select>
+      </td>
+      <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger" ng-click="deleteRule(r)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>

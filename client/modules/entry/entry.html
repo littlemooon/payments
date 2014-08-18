@@ -6,22 +6,21 @@
       <th>Amount</th>
       <th>Description</th>
       <th>Category</th>
+      <th ng-show="isEdit(true)"></th>
     </tr>
   </thead>
   <tbody>
     <tr ng-show="isEdit(true)">
       <td><input type="text" ng-model="newEntry.bank" class="form-control input-sm"/></td>
       <td><input type="text" ng-model="newEntry.date" class="form-control input-sm"/></td>
-      <td><input type="text" ng-model="newEntry.amount" class="form-control input-sm"/></td>
+      <td><input type="text" ng-model="newEntry.amount" money type="number" class="form-control input-sm"/></td>
       <td><input type="text" ng-model="newEntry.description" class="form-control input-sm"/></td>
-      <td ng-show="isEdit(true)">
-        <select ng-model="newEntry.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm" required></select>
-      </td>
+      <td><select ng-model="newEntry.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm"></select></td>
       <td><button type="button" class="btn btn-success" ng-click="addEntry(newEntry)">Add</button></td>
     </tr>
 		<tr ng-repeat="e in entries">
 			<td>{{e.bank | uppercase}}</td>
-			<td>{{e.date}}</td>
+			<td>{{e.date | date:'dd.MM.yyyy'}}</td>
 			<td>{{e.amount | currency}}</td>
 			<td>{{e.description}}</td>
 			<td ng-show="isEdit(false)">{{categoryDescription(e)}}</td>

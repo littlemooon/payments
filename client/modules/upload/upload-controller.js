@@ -1,5 +1,7 @@
-angular.module('app.upload').controller('UploadCtrl', function($scope) {
+angular.module('app.upload').controller('UploadCtrl', function($scope, UploadService) {
 
-	$scope.tagline = 'Upload bitches';
+	$scope.test = function() {
+		UploadService.get();
+	};
 
 });

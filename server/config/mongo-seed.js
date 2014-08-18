@@ -25,44 +25,25 @@ module.exports = function *(overwrite) {
     }
 
     // populate with seed data
-    yield mongo.counters.insert({_id: 'entryId', seq: entries.length});
-    yield mongo.entries.insert(entries);
     yield mongo.categories.insert(categories);
   }
 };
 
 // seed data
 
-var entries = [
-  {
-    bank: 'hsbc',
-    date: '12-12-12',
-    amount: 12.00,
-    description: 'Sainsburys',
-    categoryId: 1
-  },
-  {
-    bank: 'hsbc',
-    date: '13-13-13',
-    amount: 13.00,
-    description: 'Sports Direct',
-    categoryId: 2
-  },
-  {
-    bank: 'firstdirect',
-    date: '14-14-14',
-    amount: 14.00,
-    description: 'Tesco'
-  }
-];
+var entries = [];
 
 var categories = [
   {
-    id: 0,
-    description: 'food'
+    description: 'Food',
+    type: 'Outgoing'
   },
   {
-    id: 1,
-    description: 'clothes'
+    description: 'Clothes',
+    type: 'Outgoing'
+  },
+  {
+    description: 'Work',
+    type: 'Incoming'
   }
 ];

@@ -18,15 +18,15 @@ function *data() {
 }
 
 function *getEntries() {
-  return yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
+  return yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 1}).toArray();
 }
 
 function getData(entries) {
   // Get total amount spent by date
   var amountsByDate = {};
   _.each(entries, function(entry, i) {
-    var date = parseInt(entry.date);
-    var amount = parseInt(entry.amount);
+    var date = entry.date;
+    var amount = entry.amount;
 
     var current = amountsByDate[date] || 0;
     amountsByDate[date] = current + amount;
@@ -49,9 +49,9 @@ function getData(entries) {
   // Group amounts for each bank by date
   amountsByDate = {};
   _.each(entries, function(entry) {
-    var date = parseInt(entry.date);
+    var date = entry.date;
     var bank = entry.bank;
-    var amount = parseInt(entry.amount);
+    var amount = parseFloat(entry.amount);
 
     amountsByDate[bank] = amountsByDate[bank] || {};
     var current = amountsByDate[bank][date] || 0;
@@ -66,16 +66,18 @@ function getData(entries) {
     for (var date in amountsByDate[bank]) {
       var amount = amountsByDate[bank][date]*-1 || 0;
       amount = previousAmount + amount;
-      dataForBank.push([date, amount]);
+      dataForBank.push([parseInt(date), amount]);
       previousAmount = amount;
     }
+    console.log(dataForBank);
+
     data.push({
       "key": bank,
       "values": dataForBank
     })
   };
-
   // console.log('bank = ');
   // console.log(data);
+  
   return data;
 }

@@ -17,11 +17,21 @@ angular.module('app.dash').controller('BalanceGraphCtrl', function($scope, Balan
 	    },
 	    x: function(d){ return d[0]; },
 	    y: function(d){ return d[1]; },
-
-	    color: d3.scale.category10().range(),
-	    transitionDuration: 300,
+	    useVoronoi: false,
+	    clipEdge: true,
+	    transitionDuration: 500,
 	    useInteractiveGuideline: true,
-	    clipVoronoi: false,
+      xAxis: {
+        showMaxMin: false,
+        tickFormat: function(d) {
+          return d3.time.format('%x')(new Date(d))
+        }
+      },
+      yAxis: {
+        tickFormat: function(d){
+          return d3.format(',.2f')(d);
+        }
+      }
 	  }
 	};
 });

@@ -27,12 +27,21 @@ function *dataOutgoing() {
 }
 
 function *getEntries(type) {
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
+  var entries = [];
   if (type == 'Incoming') {
+    entries = yield mongo.entries.find({
+      "deletedTime": {"$exists": false},
+      "amount": { "$lt": 0 }
+    }).toArray();
     entries = _.map(entries, function(entry) {
       entry.amount = entry.amount *-1;
       return entry;
     });
+  } else {
+    entries = yield mongo.entries.find({
+      "deletedTime": {"$exists": false},
+      "amount": { "$gt": 0 }
+    }).toArray();
   }
   return entries;
 }
@@ -47,14 +56,15 @@ function *getCategories(type) {
 function getData(entries, categories) {
   // Group amounts for each category
   var amountsByCategory = {};
+  var undefinedCategory = false;
   _.each(entries, function(entry, i) {
     var amount = parseInt(entry.amount);
-
     var index = _.findIndex(categories, function(category){
       return category._id.toString() == entry.categoryId;
     });
+    if (index == -1) undefinedCategory = true;
 
-    var current = amountsByCategory[index] ? amountsByCategory[index] : 0;
+    var current = amountsByCategory[index] || 0;
     amountsByCategory[index] = current + amount;
   });
 
@@ -62,8 +72,12 @@ function getData(entries, categories) {
   var data = _.map(categories, function(category, i) {
     return{
       "key": category.description,
-      "y": amountsByCategory[i] ? amountsByCategory[i] : 0
+      "y": amountsByCategory[i] || 0
     }
+  });
+  undefinedCategory && data.push({
+    "key": 'Undefined',
+    "y": amountsByCategory[-1]
   });
   // console.log('total = ');
   // console.log(data);

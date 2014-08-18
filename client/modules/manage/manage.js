@@ -2,7 +2,8 @@ angular
   .module('app.manage', [
     'ui.router',
     'app.entry',
-    'app.category'
+    'app.category',
+    'app.rule'
   ])
   .config(function($stateProvider, $urlRouterProvider) {
  
@@ -23,8 +24,10 @@ angular
           templateUrl: 'modules/category/category.html',
           controller: 'CategoryCtrl'
         })
-        .state("manage.defaults", { 
-          url: "/defaults"
+        .state("manage.rules", { 
+          url: "/rules",
+          templateUrl: 'modules/rule/rule.html',
+          controller: 'RuleCtrl'
         });
 
     $urlRouterProvider.when("/manage", "/manage/entries");

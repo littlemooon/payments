@@ -15,7 +15,7 @@ exports.init = function (app) {
 };
 
 function *listEntries() {
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
+  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 0}).toArray();
 
   entries.forEach(function (entry) {
     entry.id = entry._id;
@@ -44,10 +44,10 @@ function *updateEntry(id) {
 
   entry = {
     _id: id,
-    createdTime: new Date(), 
+    updatedTime: new Date(), 
     bank: entry.bank, 
     date: entry.date,
-    amount: entry.amount, 
+    amount: parseFloat(entry.amount), 
     description: entry.description, 
     categoryId: entry.categoryId
   };

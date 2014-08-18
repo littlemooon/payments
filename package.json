@@ -14,6 +14,8 @@
     "koa-route": "~1.1.4",
     "co-body": "0.0.2",
     "co-mongo": "0.0.2",
-    "mongoose": "~3.8.14"
+    "mongoose": "~3.8.14",
+    "fast-csv": "~0.4.3",
+    "moment": "~2.8.1"
   }
 }

@@ -4,8 +4,14 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
     success(function(entries) {
       $scope.entries =  entries;
     });
+  CategoryService.get().
+    success(function(categories) {
+      $scope.categories =  categories;
+    });
 
-  $scope.newEntry = {};
+  $scope.newEntry = {
+    amount: 0
+  };
 
   $scope.addEntry = function(entry) {
     EntryService.add(entry).success(function (entryId) {
@@ -24,11 +30,6 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
         $scope.entries.splice(index, 1);
     }
   };
-
-  CategoryService.get().
-    success(function(categories) {
-      $scope.categories =  categories;
-    });
 
   $scope.categoryDescription = function(entry) {
     var category = _.filter($scope.categories, {

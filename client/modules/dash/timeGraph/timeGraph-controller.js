@@ -25,17 +25,17 @@ angular.module('app.dash').controller('TimeGraphCtrl', function($scope, TimeGrap
 	    clipEdge: true,
 	    transitionDuration: 500,
 	    useInteractiveGuideline: true,
-	    xAxis: {
-	      showMaxMin: false,
-	      tickFormat: function(d) {
-	        return d3.time.format('%x')(new Date(d))
-	      }
-	    },
-	    yAxis: {
-	      tickFormat: function(d){
-	        return d3.format(',.2f')(d);
-	      }
-	    }
+      xAxis: {
+        showMaxMin: false,
+        tickFormat: function(d) {
+          return d3.time.format('%x')(new Date(d))
+        }
+      },
+      yAxis: {
+        tickFormat: function(d){
+          return d3.format(',.2f')(d);
+        }
+      }
 	  }
 	};
 });

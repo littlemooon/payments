@@ -19,9 +19,9 @@ comongo.connect = function *() {
   var db = comongo.db = yield connect(config.mongo.url);
 
   // export default collections
-  comongo.counters = yield db.collection('counters');
   comongo.entries = yield db.collection('entries');
   comongo.categories = yield db.collection('categories');
+  comongo.rules = yield db.collection('rules');
 };
 
 /**

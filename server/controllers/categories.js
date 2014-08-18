@@ -42,7 +42,7 @@ function *updateCategory(id) {
   var category = yield parse(this);
   id = ObjectID(id);
 
-  category = {_id: id, createdTime: new Date(), description: category.description, type: category.type};
+  category = {_id: id, updatedTime: new Date(), description: category.description, type: category.type};
   var result = yield mongo.categories.update({_id: id}, category);
 
   this.status = 201;
