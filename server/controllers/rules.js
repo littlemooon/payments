@@ -67,10 +67,16 @@ function *deleteRule(id) {
 function *applyRules() {
   var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
   var rules = yield mongo.rules.find({"deletedTime": {"$exists": false}}).toArray();
-
+  console.log(rules)
   var changes = _.reduce(entries, function(changes, entry, i) {
-    _.forEach(rules, function(rule) {
-      return changes = applyRule(changes, rule, entry);
+    _.every(rules, function(rule) {
+      if (applyRule(rule, entry)) {
+        if (entry.categoryId === rule.categoryId) return false;
+        changes[rule.categoryId] = changes[rule.categoryId] || [];
+        changes[rule.categoryId].push(entry._id);
+        return false;
+      }
+      return true;
     })
     return changes;
   }, {});
@@ -86,11 +92,9 @@ function *applyRules() {
   this.status = 201;
 }
 
-function applyRule(changes, rule, entry) {
+function applyRule(rule, entry) {
   if (entry[rule.property.toLowerCase()] !== rule.value) {
-    if (entry.categoryId === rule.categoryId) return;
-    changes[rule.categoryId] = changes[rule.categoryId] || [];
-    changes[rule.categoryId].push(entry._id);
+    return true;
   }
-  return changes;
+  return false;
 }
