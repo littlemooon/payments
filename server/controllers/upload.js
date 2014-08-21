@@ -15,8 +15,7 @@ exports.init = function (app) {
 };
 
 function *test() {
-	var stream = fs.createReadStream("test.csv");
-	var entries = yield parsecsv();
+	var entries = yield parseHsbcCsv();
 	entries.shift(); // remove headers
 
 	yield mongo.entries.insert(entries);
@@ -25,7 +24,7 @@ function *test() {
 	this.status = 200;
 }
 
-function parsecsv() {
+function parseHsbcCsv() {
 	return function(callback) {
 		var stream = fs.createReadStream("test.csv");
 		var entries = [];

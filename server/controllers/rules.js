@@ -3,6 +3,8 @@
 var route = require('koa-route'),
     parse = require('co-body'),
     _ = require('lodash'),
+    rulesService = require('../services/rules-service'),
+    thunkify = require('thunkify'),
     mongo = require('../config/mongo'),
     ObjectID = mongo.ObjectID;
 
@@ -65,61 +67,9 @@ function *deleteRule(id) {
 }
 
 function *applyRules() {
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
   var rules = yield mongo.rules.find({"deletedTime": {"$exists": false}}).toArray();
-
-  var changes = _.reduce(entries, function(changes, entry) {
-    return getChanges(changes, rules, entry);
-  }, {});
-
-  for (var categoryId in changes) {
-    console.log(changes[categoryId].length + ' records changing to ' + categoryId);
-    var result = yield mongo.entries.update({_id: {$in:changes[categoryId]}}, {$set: {
-      categoryId: categoryId,
-      updatedTime: new Date()
-    }}, {multi: true});
-  }
+  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).toArray();
+  yield rulesService.applyRules(rules, entries);
 
   this.status = 201;
-}
-
-function getChanges(changes, rules, entry) {
-  _.every(rules, function(rule) {
-    if (applyRule(rule, entry)) {
-      if (entry.categoryId === rule.categoryId) return false;
-      changes[rule.categoryId] = changes[rule.categoryId] || [];
-      changes[rule.categoryId].push(entry._id);
-      return false;
-    }
-    return true;
-  });
-  return changes;
-}
-
-function applyRule(rule, entry) {
-  return operations[rule.operator.name](entry[rule.property.name], rule.value);
-}
-
-var operations = {
-  'is': function(string, comparison) {
-    return string === comparison;
-  },
-  'startsWith': function(string, comparison) {
-    return string.slice(0, comparison.length) === comparison;
-  },
-  'endsWith': function(string, comparison) {
-    return string.slice(-comparison.length) === comparison;
-  },
-  'contains': function(string, comparison) {
-    return string.indexOf(comparison) > -1;
-  },
-  'equals': function(number, comparison) {
-    return parseFloat(number) === parseFloat(comparison);
-  },
-  'greaterThan': function(number, comparison) {
-    return parseFloat(number) > parseFloat(comparison);
-  },
-  'lessThan': function(number, comparison) {
-    return parseFloat(number) < parseFloat(comparison);
-  }
 }

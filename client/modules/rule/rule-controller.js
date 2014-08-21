@@ -35,18 +35,15 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
     }
   };
 
-  $scope.categoryDescription = function(entry) {
-    var category = _.filter($scope.categories, {
-      'id': entry.categoryId || ''
-    })[0]
-
-    return (category && category.description) || '';
+  $scope.getDescription = function(id, collection) {
+    var object = _.filter(collection, { 'id': id })[0]
+    return (object && object.description) || '';
   };
 
   $scope.operatorOptions = function(rule) {
     var operators = _.filter($scope.operators, function(operator) {
-      var match = false
-      _.forEach(rule.property.operators, function(operatorId) {
+      var match = false;
+      _.forEach(getOperatorIds(rule.property), function(operatorId) {
         if (operator.id == operatorId) match = true;
       });
       return match;
@@ -54,54 +51,54 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
 
     return operators;
   };
+
+  function getOperatorIds(property) {
+      var property = _.filter($scope.properties, {
+        'id': property
+      })[0]
+      return (property && property.operators) || [];
+  }
 });
 
 var properties = [
   {
-    name: 'description',
+    id: 'description',
     description: 'Description',
-    operators: [0, 1, 2, 3]
+    operators: ['is', 'startsWith', 'endsWith', 'contains']
   },
   {
-    name: 'amount',
+    id: 'amount',
     description: 'Amount',
-    operators: [4, 5, 6]
+    operators: ['equals', 'greaterThan', 'lessThan']
   }
 ];
 var operators = [
   {
-    id: 0,
-    name: 'is',
+    id: 'is',
     description: 'is'
   },
   {
-    id: 1,
-    name: 'startsWith',
+    id: 'startsWith',
     description: 'starts with'
   },
   {
-    id: 2,
-    name: 'endsWith',
+    id: 'endsWith',
     description: 'ends with'
   },
   {
-    id: 3,
-    name: 'contains',
+    id: 'contains',
     description: 'contains'
   },
   {
-    id: 4,
-    name: 'equals',
+    id: 'equals',
     description: 'equals'
   },
   {
-    id: 5,
-    name: 'greaterThan',
+    id: 'greaterThan',
     description: 'is greater than'
   },
   {
-    id: 6,
-    name: 'lessThan',
+    id: 'lessThan',
     description: 'is less than'
   }
 ];
