@@ -8,10 +8,10 @@ angular.module('app.manage').controller('ManageCtrl', function($scope, RuleServi
   // VIEW FUNCTIONS
 
   $scope.doEdit = function() {
-  	$scope.edit = !$scope.edit;
+    $scope.edit = !$scope.edit;
   };
   $scope.isEdit = function(edit) {
-  	return $scope.edit === edit;
+    return $scope.edit === edit;
   };
 
   $scope.doRules = function() {

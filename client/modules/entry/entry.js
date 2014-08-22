@@ -1,4 +1,4 @@
 angular
   .module('app.entry', [
-  	'app.category'
-	]);
+    'app.category'
+  ]);

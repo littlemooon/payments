@@ -6,8 +6,7 @@ var route = require('koa-route'),
     fs = require('fs'),
     csv = require('fast-csv'),
     moment = require('moment'),
-    mongo = require('../config/mongo'),
-    ObjectID = mongo.ObjectID;
+    entriesService = require('../services/entries-service');
 
 // ROUTES
 
@@ -18,41 +17,41 @@ exports.init = function (app) {
 // ROUTE FUNCTIONS
 
 function *test() {
-	// parse csv and remove headers
-	var entries = yield parseHsbcCsv();
-	entries.shift();
+  // parse csv and remove headers
+  var entries = yield parseHsbcCsv();
+  entries.shift();
 
-	// add parsed entries
-	yield mongo.entries.insert(entries);
-	console.log(entries.length + ' records added');
-	
-	// return
-	this.status = 200;
+  // add parsed entries
+  yield entriesService.createEntry(entries);
+  console.log(entries.length + ' records added');
+  
+  // return
+  this.status = 200;
 }
 
 // FUNCTIONS
 
 function parseHsbcCsv() {
-	return function(callback) {
-		// get test file
-		var stream = fs.createReadStream("test.csv");
-		var entries = [];
-		csv
-			.fromStream(stream)
-			.on("record", function(data){
+  return function(callback) {
+    // get test file
+    var stream = fs.createReadStream("test.csv");
+    var entries = [];
+    csv
+      .fromStream(stream)
+      .on("record", function(data){
 
-				// transform data
-				var entry = {
-		 			createdTime: moment().toDate(),
-		 			bank: 'HSBC',
-		 			date: moment(data[0], 'DD/MM/YYYY').toDate().getTime(),
-		 			description: data[1].replace(/\s{2,}/g, ' '),
-		 			amount: parseFloat(data[2])*-1
-		 		};
-		 		entries.push(entry);
-			})
-			.on("end", function(){
-				callback(/* error: */ null, entries);
-		 });
-	}
+        // transform data
+        var entry = {
+          createdTime: moment().toDate(),
+          bank: 'HSBC',
+          date: moment(data[0], 'DD/MM/YYYY').toDate().getTime(),
+          description: data[1].replace(/\s{2,}/g, ' '),
+          amount: parseFloat(data[2])*-1
+        };
+        entries.push(entry);
+      })
+      .on("end", function(){
+        callback(/* error: */ null, entries);
+     });
+  }
 }

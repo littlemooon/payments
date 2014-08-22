@@ -3,8 +3,7 @@
 var route = require('koa-route'),
     parse = require('co-body'),
     _ = require('lodash'),
-    mongo = require('../config/mongo'),
-    ObjectID = mongo.ObjectID;
+    entriesService = require('../services/entries-service');
 
 // ROUTES
 
@@ -16,18 +15,13 @@ exports.init = function (app) {
 
 function *getData() {
   // get entries
-  var entries = yield getEntries();
+  var entries = yield entriesService.getEntries();
 
   // transform entries
   this.body = dataTransform(entries);
 }
 
 // FUNCTIONS
-
-function *getEntries() {
-  // get active entries by date
-  return yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 1}).toArray();
-}
 
 function dataTransform(entries) {
   // get total amount spent by date

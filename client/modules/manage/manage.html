@@ -1,24 +1,24 @@
 <div>
   <div class="container">
-		<div class="row">
-			<h1>Manage</h1>
-		  <hr class="soften">
-		</div>
-		<div class="row">
-			<button type="button" class="btn btn-success" ng-click="doEdit()">Edit</button>
-			<button type="button" class="btn btn-default" ng-click="doRules()">Apply Rules</button>
-		  <hr class="soften">
-  	</div>
-	  
-		<section class="row"> 
-			<ul class="nav nav-tabs" role="tablist">
-				<li ng-repeat="t in tabs" ng-class="{active:isActive('manage'+t.route)}">
-					<a ui-sref={{t.route}}>{{t.name}}</a>
-				</li>
-			</ul>
+    <div class="row">
+      <h1>Manage</h1>
+      <hr class="soften">
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-success" ng-click="doEdit()">Edit</button>
+      <button type="button" class="btn btn-default" ng-click="doRules()">Apply Rules</button>
+      <hr class="soften">
+    </div>
+    
+    <section class="row"> 
+      <ul class="nav nav-tabs" role="tablist">
+        <li ng-repeat="t in tabs" ng-class="{active:isActive('manage'+t.route)}">
+          <a ui-sref={{t.route}}>{{t.name}}</a>
+        </li>
+      </ul>
 
-			<div class="panel" ui-view></div>
+      <div class="panel" ui-view></div>
 
-		</section>
- 	</div>
+    </section>
+  </div>
 </div>

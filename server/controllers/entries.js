@@ -3,8 +3,7 @@
 var route = require('koa-route'),
     parse = require('co-body'),
     _ = require('lodash'),
-    mongo = require('../config/mongo'),
-    ObjectID = mongo.ObjectID;
+    entriesService = require('../services/entries-service');
 
 // ROUTES
 
@@ -19,11 +18,7 @@ exports.init = function (app) {
 
 function *listEntries() {
   // get active entries by date
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 0}).toArray();
-  entries.forEach(function (entry) {
-    entry.id = entry._id;
-    delete entry._id;
-  });
+  var entries = yield entriesService.getEntries();
 
   // return
   this.body = entries;
@@ -35,7 +30,7 @@ function *createEntry() {
   entry.createdTime = new Date();
 
   // create record
-  var results = yield mongo.entries.insert(entry);
+  var results = yield entriesService.createEntry(entry);
 
   // return
   this.status = 201;
@@ -45,9 +40,7 @@ function *createEntry() {
 function *updateEntry(id) {
   // get entry to update
   var entry = yield parse(this);
-  id = ObjectID(id);
   entry = {
-    _id: id,
     updatedTime: new Date(), 
     bank: entry.bank, 
     date: entry.date,
@@ -57,7 +50,7 @@ function *updateEntry(id) {
   };
 
   // update record
-  yield mongo.entries.update({_id:id}, entry);
+  yield entriesService.updateEntry(id, entry);
 
   // return
   this.status = 201;
@@ -65,8 +58,7 @@ function *updateEntry(id) {
 
 function *deleteEntry(id) {
   // set entry to inactive
-  id = ObjectID(id);
-  yield mongo.entries.update({_id:id}, {$set: {deletedTime: new Date()}});
+  yield entriesService.deleteEntry(id);
 
   // return
   this.status = 201;

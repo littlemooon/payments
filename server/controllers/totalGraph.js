@@ -3,8 +3,8 @@
 var route = require('koa-route'),
     parse = require('co-body'),
     _ = require('lodash'),
-    mongo = require('../config/mongo'),
-    ObjectID = mongo.ObjectID;
+    entriesService = require('../services/entries-service'),
+    categoriesService = require('../services/categories-service');
 
 // ROUTES
 
@@ -15,59 +15,27 @@ exports.init = function (app) {
 
 // ROUTE FUNCTIONS
 
-function *dataIncoming() {
-  // get data for incoming entries
-  var entries = yield getEntries('Incoming');
-  var categories = yield getCategories('Incoming');
-
-  // transform entries and categories
-  this.body = getData(entries, categories);
-}
-
 function *dataOutgoing() {
   // get data for outgoing entries
-  var entries = yield getEntries('Outgoing');
-  var categories = yield getCategories('Outgoing');
+  var entries = yield entriesService.getOutgoingEntries();
+  var categories = yield categoriesService.getOutgoingCategories();
 
   // transform entries and categories
-  this.body = getData(entries, categories);
+  this.body = dataTransform(entries, categories);
+}
+
+function *dataIncoming() {
+  // get data for incoming entries
+  var entries = yield entriesService.getIncomingEntries();
+  var categories = yield categoriesService.getIncomingCategories();
+
+  // transform entries and categories
+  this.body = dataTransform(entries, categories);
 }
 
 // FUNCTIONS
 
-function *getEntries(type) {
-  var entries = [];
-  if (type == 'Outgoing') {
-    // get entries with positive amount
-    entries = yield mongo.entries.find({
-      "deletedTime": {"$exists": false},
-      "amount": { "$gt": 0 }
-    }).toArray();
-  } else {
-    // get entries with a negative amount
-    entries = yield mongo.entries.find({
-      "deletedTime": {"$exists": false},
-      "amount": { "$lt": 0 }
-    }).toArray();
-
-    // transform the amount
-    entries = _.map(entries, function(entry) {
-      entry.amount = entry.amount *-1;
-      return entry;
-    });
-  }
-  return entries;
-}
-
-function *getCategories(type) {
-  // get 'Incoming' or 'Outgoing' categories
-  return yield mongo.categories.find({
-    "deletedTime": {"$exists": false},
-    "type": type
-  }).toArray();
-}
-
-function getData(entries, categories) {
+function dataTransform(entries, categories) {
   // group amounts for each category
   var amountsByCategory = {};
   var undefinedCategory = false;

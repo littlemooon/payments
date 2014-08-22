@@ -3,8 +3,7 @@
 var route = require('koa-route'),
     parse = require('co-body'),
     _ = require('lodash'),
-    mongo = require('../config/mongo'),
-    ObjectID = mongo.ObjectID;
+    categoriesService = require('../services/categories-service');
 
 // ROUTES
 
@@ -19,11 +18,7 @@ exports.init = function (app) {
 
 function *listCategories() {
   // get active categories
-  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).toArray();
-  categories.forEach(function (category) {
-    category.id = category._id;
-    delete category._id;
-  });
+  var categories = yield categoriesService.getAllCategories();
 
   // return
   this.body = categories;
@@ -35,7 +30,7 @@ function *createCategory() {
   category.createdTime = new Date();
 
   // create record
-  var results = yield mongo.categories.insert(category);
+  var results = yield categoriesService.createCategory(category);
   
   // return
   this.status = 201;
@@ -45,16 +40,14 @@ function *createCategory() {
 function *updateCategory(id) {
   // get category to update
   var category = yield parse(this);
-  id = ObjectID(id);
   category = {
-    _id: id, 
     updatedTime: new Date(), 
     description: category.description, 
     type: category.type
   };
 
   // update record
-  var result = yield mongo.categories.update({_id: id}, category);
+  yield categoriesService.updateCategory(id, category);
 
   // return
   this.status = 201;
@@ -62,8 +55,7 @@ function *updateCategory(id) {
 
 function *deleteCategory(id) {
   // set category to inactive
-  id = ObjectID(id);
-  yield mongo.categories.update({_id: id}, {$set: {deletedTime: new Date()}});
+  yield categoriesService.deleteCategory(id);
 
   // return
   this.status = 201;

@@ -12,14 +12,14 @@
       <td><select ng-model="newCategory.type" ng-selected="0" ng-options="t for t in types" class="form-control input-sm"></select></td>
       <td><button type="button" class="btn btn-success" ng-click="addCategory(newCategory)">Add</button></td>
     </tr>
-		<tr ng-repeat="c in categories">
-			<td ng-show="isEdit(false)">{{c.description}}</td>
-			<td ng-show="isEdit(true)"><input type="text" ng-model="c.description" ng-blur="updateCategory(c)" class="form-control input-sm"/></td>
+    <tr ng-repeat="c in categories">
+      <td ng-show="isEdit(false)">{{c.description}}</td>
+      <td ng-show="isEdit(true)"><input type="text" ng-model="c.description" ng-blur="updateCategory(c)" class="form-control input-sm"/></td>
       <td ng-show="isEdit(false)">{{c.type}}</td>
       <td ng-show="isEdit(true)">
         <select ng-model="c.type" ng-selected="0" ng-options="t for t in types" ng-blur="updateCategory(c)" class="form-control input-sm"></select>
       </td>
       <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger" ng-click="deleteCategory(c)">Delete</button></td>
-		</tr>
-	</tbody>
+    </tr>
+  </tbody>
 </table>

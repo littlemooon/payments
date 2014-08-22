@@ -2,7 +2,7 @@
 
 angular
   .module('app', [
-  	'ui.router',
+    'ui.router',
     'app.dash',
     'app.manage',
     'app.upload'

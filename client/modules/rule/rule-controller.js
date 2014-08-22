@@ -2,24 +2,25 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
 
   // DATA
 
-  RuleService.get().
-    success(function(data) {
-      $scope.rules =  data;
-    });
-  CategoryService.get().
-    success(function(categories) {
-      $scope.categories =  categories;
-    });
+  RuleService.get().success(function(data) {
+    $scope.rules =  data;
+  });
+  CategoryService.get().success(function(categories) {
+    $scope.categories =  categories;
+  });
 
-  $scope.newRule = newRule;
   $scope.properties = properties;
   $scope.operators = operators;
+  $scope.newRule = {
+    property: $scope.properties[0].id,
+    operator: $scope.operators[0].id
+  };
 
   // IO FUNCTIONS
 
   $scope.addRule = function(rule) {
     // create rule
-    rule.next = $scope.rules[0].id;
+    rule.next = $scope.rules[0] && $scope.rules[0].id;
     RuleService.add(rule).success(function (ruleId) {
 
       // add to scope
@@ -28,7 +29,10 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
     })
 
     // reset new rule
-    $scope.newRule = newRule;
+    $scope.newRule = {
+      property: $scope.properties[0].id,
+      operator: $scope.operators[0].id
+    };
   };
   $scope.updateRule = function(rule) {
     RuleService.update(rule);
@@ -118,7 +122,3 @@ var operators = [
     description: 'equals'
   }
 ];
-var newRule = {
-  property: properties[0].id,
-  operator: operators[0].id
-};

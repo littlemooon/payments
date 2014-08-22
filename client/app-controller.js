@@ -1,6 +1,6 @@
 angular.module('app').controller('AppCtrl', function($scope, $state){
 
-	// DATA
+  // DATA
 
   $scope.mainPage = mainPage;  
   $scope.pages = pages;

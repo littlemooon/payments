@@ -2,14 +2,12 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
 
   // DATA
 
-  EntryService.get().
-    success(function(entries) {
-      $scope.entries =  entries;
-    });
-  CategoryService.get().
-    success(function(categories) {
-      $scope.categories =  categories;
-    });
+  EntryService.get().success(function(entries) {
+    $scope.entries =  entries;
+  });
+  CategoryService.get().success(function(categories) {
+    $scope.categories =  categories;
+  });
 
   $scope.newEntry = newEntry;
 

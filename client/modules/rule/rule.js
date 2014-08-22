@@ -1,4 +1,4 @@
 angular
   .module('app.rule', [
-  	'app.category'
-	]);
+    'app.category'
+  ]);

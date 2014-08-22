@@ -15,7 +15,7 @@ var config = require('./server/config/config'),
 module.exports = app;
 
 app.init = co(function *() {
-	// mongo
+  // mongo
   yield mongo.connect();
   yield mongoSeed();
 

@@ -1,68 +1,68 @@
 <!doctype html>
 <html lang="en" ng-app="app" >
 <head>
-	<meta charset="UTF-8">
-	<base href="/">
+  <meta charset="UTF-8">
+  <base href="/">
 
-	<title>PandaPay</title>
+  <title>PandaPay</title>
 
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/nv.d3.min.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nv.d3.min.css">
 
 </head>
 
 <body ng-controller="AppCtrl">
 <div class="container">
-	
-	<div class="collapse navbar-collapse">
-		<div class="navbar-header">
-			<a class="navbar-brand" ng-class="{active:isActive(mainPage.route)}" ui-sref={{mainPage.route}}>{{mainPage.name}}</a>
-		</div>
-	  <ul class="nav navbar-nav">
-			<li ng-repeat="p in pages" ng-class="{active:isActive(p.route)}">
-				<a ui-sref={{p.route}}>{{p.name}}</a>
-			</li>
-	  </ul>
-	</div>
+  
+  <div class="collapse navbar-collapse">
+    <div class="navbar-header">
+      <a class="navbar-brand" ng-class="{active:isActive(mainPage.route)}" ui-sref={{mainPage.route}}>{{mainPage.name}}</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li ng-repeat="p in pages" ng-class="{active:isActive(p.route)}">
+        <a ui-sref={{p.route}}>{{p.name}}</a>
+      </li>
+    </ul>
+  </div>
 
-	<div ui-view></div>
+  <div ui-view></div>
 
 </div>
-	<script src="bower_components/lodash/dist/lodash.js"></script>
-	<script src="bower_components/d3/d3.js"></script>
-	<script src="bower_components/nvd3/nv.d3.js"></script>
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-	<script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
-	<script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
-	<script src="bower_components/angular-money-directive/angular-money-directive.js"></script>
-	<script src="app.js"></script>
-	<script src="app-controller.js"></script>
-	<script src="modules/common/common.js"></script>
-	<script src="modules/common/common-directives.js"></script>
-	<script src="modules/dash/dash.js"></script>
-	<script src="modules/dash/dash-controller.js"></script>
-	<script src="modules/dash/timeGraph/timeGraph-controller.js"></script>
-	<script src="modules/dash/timeGraph/timeGraph-service.js"></script>
-	<script src="modules/dash/totalGraph/totalGraph-controller.js"></script>
-	<script src="modules/dash/totalGraph/totalGraph-service.js"></script>
-	<script src="modules/dash/balanceGraph/balanceGraph-controller.js"></script>
-	<script src="modules/dash/balanceGraph/balanceGraph-service.js"></script>
-	<script src="modules/manage/manage.js"></script>
-	<script src="modules/manage/manage-controller.js"></script>
-	<script src="modules/entry/entry.js"></script>
-	<script src="modules/entry/entry-controller.js"></script>
-	<script src="modules/entry/entry-service.js"></script>
-	<script src="modules/category/category.js"></script>
-	<script src="modules/category/category-controller.js"></script>
-	<script src="modules/category/category-service.js"></script>
-	<script src="modules/rule/rule.js"></script>
-	<script src="modules/rule/rule-controller.js"></script>
-	<script src="modules/rule/rule-service.js"></script>
-	<script src="modules/upload/upload.js"></script>
-	<script src="modules/upload/upload-controller.js"></script>
-	<script src="modules/upload/upload-service.js"></script>
+  <script src="bower_components/lodash/dist/lodash.js"></script>
+  <script src="bower_components/d3/d3.js"></script>
+  <script src="bower_components/nvd3/nv.d3.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+  <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+  <script src="bower_components/angular-money-directive/angular-money-directive.js"></script>
+  <script src="app.js"></script>
+  <script src="app-controller.js"></script>
+  <script src="modules/common/common.js"></script>
+  <script src="modules/common/common-directives.js"></script>
+  <script src="modules/dash/dash.js"></script>
+  <script src="modules/dash/dash-controller.js"></script>
+  <script src="modules/dash/timeGraph/timeGraph-controller.js"></script>
+  <script src="modules/dash/timeGraph/timeGraph-service.js"></script>
+  <script src="modules/dash/totalGraph/totalGraph-controller.js"></script>
+  <script src="modules/dash/totalGraph/totalGraph-service.js"></script>
+  <script src="modules/dash/balanceGraph/balanceGraph-controller.js"></script>
+  <script src="modules/dash/balanceGraph/balanceGraph-service.js"></script>
+  <script src="modules/manage/manage.js"></script>
+  <script src="modules/manage/manage-controller.js"></script>
+  <script src="modules/entry/entry.js"></script>
+  <script src="modules/entry/entry-controller.js"></script>
+  <script src="modules/entry/entry-service.js"></script>
+  <script src="modules/category/category.js"></script>
+  <script src="modules/category/category-controller.js"></script>
+  <script src="modules/category/category-service.js"></script>
+  <script src="modules/rule/rule.js"></script>
+  <script src="modules/rule/rule-controller.js"></script>
+  <script src="modules/rule/rule-service.js"></script>
+  <script src="modules/upload/upload.js"></script>
+  <script src="modules/upload/upload-controller.js"></script>
+  <script src="modules/upload/upload-service.js"></script>
 </body>
 
 </html>
