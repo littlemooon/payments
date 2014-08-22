@@ -1,6 +1,7 @@
 <table class="table table-hover">
   <thead>
     <tr>
+      <th>Priority</th>
       <th>Property</th>
       <th></th>
       <th>Value</th>
@@ -11,14 +12,15 @@
   </thead>
   <tbody>
     <tr ng-show="isEdit(true)">
-      <td><select ng-model="newRule.property" ng-selected="0" ng-options="p as p.description for p in properties" class="form-control input-sm"></select></td>
-      <td><select ng-model="newRule.operator" ng-selected="0" ng-options="o as o.description for o in operatorOptions(newRule)" class="form-control input-sm"></select></td>
+      <td><select ng-model="newRule.property" ng-selected="0" ng-options="p.id as p.description for p in properties" class="form-control input-sm"></select></td>
+      <td><select ng-model="newRule.operator" ng-selected="0" ng-options="o.id as o.description for o in operatorOptions(newRule)" class="form-control input-sm"></select></td>
       <td><input type="text" ng-model="newRule.value" money type="number" class="form-control input-sm"/></td>
       <td>=</td>
       <td><select ng-model="newRule.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm"></select></td>
       <td><button type="button" class="btn btn-success" ng-click="addRule(newRule)">Add</button></td>
     </tr>
     <tr ng-repeat="r in rules">
+      <td ng-show="isEdit(false)">{{getRuleIndex(r)}}</td>
       <td ng-show="isEdit(false)">{{getDescription(r.property, properties)}}</td>
       <td ng-show="isEdit(true)"><select ng-model="r.property" ng-blur="updateRule(r)" ng-selected="0" ng-options="p.id as p.description for p in properties" class="form-control input-sm"></select></td>
       <td ng-show="isEdit(false)">{{getDescription(r.operator, operators)}}</td>

@@ -1,5 +1,7 @@
 angular.module('app.dash').controller('TotalGraphCtrl', function($scope, TotalGraphService) {
 
+	// DATA
+	
 	TotalGraphService.getIncoming().
     success(function(data) {
 		  $scope.incomingData = data;

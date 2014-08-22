@@ -3,15 +3,13 @@
 var mongo = require('./mongo'),
     ObjectID = mongo.ObjectID;
 
-/**
- * Clears and populates db with seed data
- * @param overwrite Overwrite existing database even if it is not empty
- */
+// EXPORTS
+
 module.exports = function *(overwrite) {
   var count = yield mongo.entries.count({}, {limit: 1});
   if (overwrite || count === 0) {
 
-    // clear
+    // clear database
     for (var collection in mongo) {
       if (mongo[collection].drop) {
         try {
@@ -29,10 +27,9 @@ module.exports = function *(overwrite) {
   }
 };
 
-// seed data
+// SEED DATA
 
 var entries = [];
-
 var categories = [
   {
     description: 'Food',

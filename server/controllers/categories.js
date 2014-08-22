@@ -6,7 +6,8 @@ var route = require('koa-route'),
     mongo = require('../config/mongo'),
     ObjectID = mongo.ObjectID;
 
-// register koa routes
+// ROUTES
+
 exports.init = function (app) {
   app.use(route.get('/api/categories', listCategories));
   app.use(route.post('/api/categories', createCategory));
@@ -14,44 +15,56 @@ exports.init = function (app) {
   app.use(route.del('/api/categories/:id', deleteCategory));
 };
 
-function *listCategories() {
-  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).toArray();
+// ROUTE FUNCTIONS
 
+function *listCategories() {
+  // get active categories
+  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).toArray();
   categories.forEach(function (category) {
     category.id = category._id;
     delete category._id;
   });
 
+  // return
   this.body = categories;
 }
 
 function *createCategory() {
+  // get new category
   var category = yield parse(this);
-
   category.createdTime = new Date();
-  var results = yield mongo.categories.insert(category);
 
+  // create record
+  var results = yield mongo.categories.insert(category);
+  
+  // return
   this.status = 201;
   this.body = results[0]._id.toString();
-
-  category.id = category._id;
-  delete category._id;
 }
 
 function *updateCategory(id) {
+  // get category to update
   var category = yield parse(this);
   id = ObjectID(id);
+  category = {
+    _id: id, 
+    updatedTime: new Date(), 
+    description: category.description, 
+    type: category.type
+  };
 
-  category = {_id: id, updatedTime: new Date(), description: category.description, type: category.type};
+  // update record
   var result = yield mongo.categories.update({_id: id}, category);
 
+  // return
   this.status = 201;
 }
 
 function *deleteCategory(id) {
+  // set category to inactive
   id = ObjectID(id);
-
   yield mongo.categories.update({_id: id}, {$set: {deletedTime: new Date()}});
 
+  // return
   this.status = 201;
 }

@@ -1,5 +1,7 @@
 angular.module('app.dash').controller('TimeGraphCtrl', function($scope, TimeGraphService) {
 
+	// DATA
+
 	TimeGraphService.getIncoming().
     success(function(data) {
 		  $scope.incomingData = data;
@@ -8,7 +10,7 @@ angular.module('app.dash').controller('TimeGraphCtrl', function($scope, TimeGrap
     success(function(data) {
 		  $scope.outgoingData = data;
 		});
-
+		
 	$scope.options = {
 	  chart: {
 	    type: 'stackedAreaChart',

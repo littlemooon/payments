@@ -23,10 +23,12 @@ module.exports = function (app) {
       yield next;
       return;
     }
+
     // if the requested path matched a file and it is served successfully, exit the middleware
     if (yield send(this, this.path, sendOpts)) {
       return;
     }
+    
     // if given path didn't match any file, just let angular handle the routing
     yield send(this, '/index.html', sendOpts);
   });

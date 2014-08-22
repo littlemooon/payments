@@ -4,16 +4,16 @@ var comongo = require('co-mongo'),
     connect = comongo.connect,
     config = require('./config');
 
+// EXPORTS
+
 // extending and exposing top co-mongo namespace like this is not optimal but it saves the user from one extra require();
 module.exports = comongo;
 
-/**
- * Open connection
- */
+// CONNECT
+
+// open connection
 comongo.connect = function *() {
-  if (comongo.db) {
-    yield comongo.db.close();
-  }
+  if (comongo.db) yield comongo.db.close();
 
   // export mongo db instance
   var db = comongo.db = yield connect(config.mongo.url);
@@ -24,9 +24,9 @@ comongo.connect = function *() {
   comongo.rules = yield db.collection('rules');
 };
 
-/**
- * Retrieves the next sequence number for the given counter
- */
+// FUNCTIONS
+
+// get next counter
 comongo.getNextSequence = function *(counterName) {
   var results = yield comongo.counters.findAndModify(
       {_id: counterName},

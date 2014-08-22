@@ -1,3 +1,1 @@
-angular.module('app.dash').controller('DashCtrl', function($scope) {
-
-});
+angular.module('app.dash').controller('DashCtrl', function($scope) {});

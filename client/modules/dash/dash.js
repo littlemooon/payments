@@ -5,6 +5,7 @@ angular
   ])
   .config(function($stateProvider) {
  
+    // next graph views
     $stateProvider
       .state('dash', {
         url: '/',

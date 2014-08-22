@@ -6,33 +6,42 @@ var route = require('koa-route'),
     mongo = require('../config/mongo'),
     ObjectID = mongo.ObjectID;
 
-// register koa routes
+// ROUTES
+
 exports.init = function (app) {
-  app.use(route.get('/api/graph/balance', data));
+  app.use(route.get('/api/graph/balance', getData));
 };
 
-function *data() {
+// ROUTE FUNCTIONS
+
+function *getData() {
+  // get entries
   var entries = yield getEntries();
 
-  this.body = getData(entries);
+  // transform entries
+  this.body = dataTransform(entries);
 }
 
+// FUNCTIONS
+
 function *getEntries() {
+  // get active entries by date
   return yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 1}).toArray();
 }
 
-function getData(entries) {
-  // Get total amount spent by date
+function dataTransform(entries) {
+  // get total amount spent by date
   var amountsByDate = {};
   _.each(entries, function(entry, i) {
     var date = entry.date;
     var amount = entry.amount;
 
+    // update total for each entry by date
     var current = amountsByDate[date] || 0;
     amountsByDate[date] = current + amount;
   });
 
-  // Put totals into an array
+  // save totals by date
   var totalsArray = [];
   var previousAmount = 0;
   for (var date in amountsByDate) {
@@ -41,24 +50,27 @@ function getData(entries) {
     totalsArray.push([date, amount]);
     previousAmount = amount;
   };
+
+  // add totals to return data array
   var data = [{
     "key": 'Total',
     "values": totalsArray
   }];
 
-  // Group amounts for each bank by date
+  // group amounts for each bank by date
   amountsByDate = {};
   _.each(entries, function(entry) {
     var date = entry.date;
     var bank = entry.bank;
     var amount = parseFloat(entry.amount);
 
+    // update total for each entry by bank and date
     amountsByDate[bank] = amountsByDate[bank] || {};
     var current = amountsByDate[bank][date] || 0;
     amountsByDate[bank][date] = current + amount;
   });
 
-  // Put amounts by date into the data array
+  // save totals for each bank
   for (var bank in amountsByDate) {
     var dataForBank = [];
     var previousAmount = 0;
@@ -66,18 +78,18 @@ function getData(entries) {
     for (var date in amountsByDate[bank]) {
       var amount = amountsByDate[bank][date]*-1 || 0;
       amount = previousAmount + amount;
-      dataForBank.push([parseInt(date), amount]);
+      dataForBank.push([date, amount]);
       previousAmount = amount;
     }
-    console.log(dataForBank);
 
+    // add bank totals to return data array
     data.push({
       "key": bank,
       "values": dataForBank
     })
   };
+
   // console.log('bank = ');
   // console.log(data);
-  
   return data;
 }

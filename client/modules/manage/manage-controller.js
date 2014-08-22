@@ -1,6 +1,12 @@
 angular.module('app.manage').controller('ManageCtrl', function($scope, RuleService){
 
+  // DATA
+  
+  $scope.tabs = tabs;
   $scope.edit = false;
+
+  // VIEW FUNCTIONS
+
   $scope.doEdit = function() {
   	$scope.edit = !$scope.edit;
   };
@@ -11,10 +17,12 @@ angular.module('app.manage').controller('ManageCtrl', function($scope, RuleServi
   $scope.doRules = function() {
     RuleService.apply();
   };
-  
-  $scope.tabs = [
-    { name: "Entries", route:".entries" },
-    { name: "Categories", route:".categories" },
-    { name: "Rules", route:".rules" }
-  ];
 });
+
+// OBJECTS
+
+var tabs = [
+  { name: "Entries", route:".entries" },
+  { name: "Categories", route:".categories" },
+  { name: "Rules", route:".rules" }
+];

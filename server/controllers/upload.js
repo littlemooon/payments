@@ -9,28 +9,39 @@ var route = require('koa-route'),
     mongo = require('../config/mongo'),
     ObjectID = mongo.ObjectID;
 
-// register koa routes
+// ROUTES
+
 exports.init = function (app) {
   app.use(route.get('/api/upload/test', test));
 };
 
-function *test() {
-	var entries = yield parseHsbcCsv();
-	entries.shift(); // remove headers
+// ROUTE FUNCTIONS
 
+function *test() {
+	// parse csv and remove headers
+	var entries = yield parseHsbcCsv();
+	entries.shift();
+
+	// add parsed entries
 	yield mongo.entries.insert(entries);
 	console.log(entries.length + ' records added');
 	
+	// return
 	this.status = 200;
 }
 
+// FUNCTIONS
+
 function parseHsbcCsv() {
 	return function(callback) {
+		// get test file
 		var stream = fs.createReadStream("test.csv");
 		var entries = [];
 		csv
 			.fromStream(stream)
 			.on("record", function(data){
+
+				// transform data
 				var entry = {
 		 			createdTime: moment().toDate(),
 		 			bank: 'HSBC',

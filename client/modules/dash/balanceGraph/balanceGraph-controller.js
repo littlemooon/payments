@@ -1,10 +1,12 @@
 angular.module('app.dash').controller('BalanceGraphCtrl', function($scope, BalanceGraphService) {
 
+	// DATA
+
 	BalanceGraphService.get().
     success(function(data) {
 		  $scope.data = data;
 		});
-
+		
 	$scope.options = {
 	  chart: {
 	    type: 'lineChart',
