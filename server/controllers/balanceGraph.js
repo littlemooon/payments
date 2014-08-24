@@ -43,7 +43,7 @@ function dataTransform(entries) {
     amount = previousAmount + amount;
     totalsArray.push([date, amount]);
     previousAmount = amount;
-  };
+  }
 
   // add totals to return data array
   var data = [{
@@ -67,21 +67,21 @@ function dataTransform(entries) {
   // save totals for each bank
   for (var bank in amountsByDate) {
     var dataForBank = [];
-    var previousAmount = 0;
+    previousAmount = 0;
 
-    for (var date in amountsByDate[bank]) {
-      var amount = amountsByDate[bank][date]*-1 || 0;
-      amount = previousAmount + amount;
-      dataForBank.push([date, amount]);
-      previousAmount = amount;
+    for (date in amountsByDate[bank]) {
+      var bankAmount = amountsByDate[bank][date]*-1 || 0;
+      bankAmount = previousAmount + bankAmount;
+      dataForBank.push([date, bankAmount]);
+      previousAmount = bankAmount;
     }
 
     // add bank totals to return data array
     data.push({
       "key": bank,
       "values": dataForBank
-    })
-  };
+    });
+  }
 
   // console.log('bank = ');
   // console.log(data);

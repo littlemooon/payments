@@ -10,7 +10,7 @@ angular
         url: '/upload',
         templateUrl: 'modules/upload/upload.html',
         controller: 'UploadCtrl'
-      })
+      });
   })
 
   .config(['flowFactoryProvider', function (flowFactoryProvider) {

@@ -56,11 +56,11 @@ function dataTransform(entries, categories) {
     return{
       "key": category.description,
       "y": amountsByCategory[i] || 0
-    }
+    };
   });
 
   // create undefined category if any entries with invalid category
-  undefinedCategory && data.push({
+  if (undefinedCategory) data.push({
     "key": 'Undefined',
     "y": amountsByCategory[-1]
   });

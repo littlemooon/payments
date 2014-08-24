@@ -47,5 +47,5 @@ function *updateCategory(id, category) {
 }
 
 function *deleteCategory(id) {
-  return yield mongo.categories.update({_id: ObjectID(id)}, {$set: {deletedTime: new Date()}});
+  return yield mongo.categories.update({_id: ObjectID(id)}, {$set: {deletedTime: Date()}});
 }

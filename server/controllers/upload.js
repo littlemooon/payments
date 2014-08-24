@@ -53,5 +53,5 @@ function parseHsbcCsv() {
       .on("end", function(){
         callback(/* error: */ null, entries);
      });
-  }
+  };
 }

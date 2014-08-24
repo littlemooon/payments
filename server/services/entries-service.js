@@ -59,5 +59,5 @@ function *updateEntry(id, entry) {
 }
 
 function *deleteEntry(id) {
-  return yield mongo.entries.update({_id: ObjectID(id)}, {$set: {deletedTime: new Date()}});
+  return yield mongo.entries.update({_id: ObjectID(id)}, {$set: {deletedTime: Date()}});
 }

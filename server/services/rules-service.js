@@ -21,11 +21,11 @@ function *getRules() {
     rule.id = rule._id;
     delete rule._id;
   });
-  console.log('rules = ')
-  console.log(rules)
+  console.log('rules = ');
+  console.log(rules);
   var sortedRules = sortRules(rules);
-  console.log('sorted = ')
-  console.log(sortedRules)
+  console.log('sorted = ');
+  console.log(sortedRules);
 
   return sortRules(rules);
 }
@@ -120,15 +120,15 @@ function sortRules(rules) {
   var sortedRules = [];
   rules.forEach(function (rule) {
     if (!rule.next) {
-      console.log('push = ')
-      console.log(rule)
+      console.log('push = ');
+      console.log(rule);
       sortedRules.push(rule);
     } else {
       var index = _.indexOf(sortedRules, _.filter(sortedRules, function(sortedRule) {
-        sortedRule.id === rule.next
+        return sortedRule.id === rule.next;
       })[0]);
-      console.log('add '+index+' = ')
-      console.log(rule)
+      console.log('add '+index+' = ');
+      console.log(rule);
       sortedRules.splice(index, 0, rule);
     }
   });
@@ -143,9 +143,9 @@ function *getRule(id) {
 }
 
 function *updateRelatedRule(relatedRule, property, rule) {
-  if (relatedRule && relatedRule[property] !== value) {
+  if (relatedRule && relatedRule[property] !== rule.value) {
     relatedRule.updatedTime = new Date();
-    relatedRule[property] = rule && value;
+    relatedRule[property] = rule && rule.value;
     return yield mongo.rules.update({_id: relatedRule._id}, relatedRule);
   }
 }
@@ -220,4 +220,4 @@ var operations = {
   'lessThan': function(number, comparison) {
     return parseFloat(number) < parseFloat(comparison);
   }
-}
+};

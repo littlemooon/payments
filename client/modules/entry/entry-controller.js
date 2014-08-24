@@ -20,7 +20,7 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
       // add to scope
       entry.id = entryId;
       $scope.entries.unshift(entry);    
-    })
+    });
 
     // reset new entry
     $scope.newEntry = newEntry;

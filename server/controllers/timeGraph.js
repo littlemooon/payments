@@ -62,7 +62,7 @@ function dataTransform(entries, categories) {
     return{
       "key": category.description,
       "values": dataForCategory
-    }
+    };
   });
 
   // console.log('time = ');

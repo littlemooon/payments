@@ -26,7 +26,7 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
       // add to scope
       rule.id = ruleId;
       $scope.rules.unshift(rule);    
-    })
+    });
 
     // reset new rule
     $scope.newRule = {
@@ -51,10 +51,10 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
   $scope.getPriority = function(rule) {
     // get index of sorted rules
     return _.indexOf($scope.rules, rule)+1;
-  }
+  };
   $scope.getDescription = function(id, collection) {
     // get description property for object in collection with id
-    var object = _.filter(collection, { 'id': id })[0]
+    var object = _.filter(collection, { 'id': id })[0];
     return (object && object.description) || '';
   };
 
@@ -67,13 +67,13 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
         if (operator.id == operatorId) match = true;
       });
       return match;
-    })
+    });
     return operators;
   };
 
-  function getOperatorIds(property) {
+  function getOperatorIds(propertyId) {
     // get operators associated to the property
-    var property = _.filter($scope.properties, { 'id': property })[0]
+    var property = _.filter($scope.properties, { 'id': propertyId })[0];
     return (property && property.operators) || [];
   }
 });

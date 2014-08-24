@@ -16,9 +16,10 @@ angular.module('app.category').controller('CategoryCtrl', function($scope, Categ
     // create category
     CategoryService.add(category).success(function (categoryId) {
 
-    // add to scope
-    category.id = categoryId;
-    $scope.categories.unshift(category);
+      // add to scope
+      category.id = categoryId;
+      $scope.categories.unshift(category);
+    });
 
     // reset new category
     $scope.newCategory = newCategory;
