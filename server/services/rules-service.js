@@ -94,7 +94,7 @@ function *deleteRule(id) {
     next: null,
     prev: null
   }});
-  console.log('whoooooooooooooooooooooooooo')
+  
   // update related rules
   yield updateRelatedRule(nextRule, 'prev', prevRule && prevRule._id);
   yield updateRelatedRule(prevRule, 'next', nextRule && nextRule._id);
@@ -120,15 +120,11 @@ function sortRules(rules) {
   var sortedRules = [];
   rules.forEach(function (rule) {
     if (!rule.next) {
-      console.log('push = ');
-      console.log(rule);
       sortedRules.push(rule);
     } else {
       var index = _.indexOf(sortedRules, _.filter(sortedRules, function(sortedRule) {
-        return sortedRule.id === rule.next;
+        return sortedRule.id.toString() === rule.next.toString();
       })[0]);
-      console.log('add '+index+' = ');
-      console.log(rule);
       sortedRules.splice(index, 0, rule);
     }
   });
