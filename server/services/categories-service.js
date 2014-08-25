@@ -5,7 +5,7 @@ var mongo = require('../config/mongo'),
 
 // EXPORTS
 
-module.exports.getAllCategories = getAllCategories;
+module.exports.getCategories = getCategories;
 module.exports.getOutgoingCategories = getOutgoingCategories;
 module.exports.getIncomingCategories = getIncomingCategories;
 module.exports.createCategory = createCategory;
@@ -14,8 +14,8 @@ module.exports.deleteCategory = deleteCategory;
 
 // EXPORTED FUNCTIONS
 
-function *getAllCategories() {
-  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).toArray();
+function *getCategories() {
+  var categories = yield mongo.categories.find({"deletedTime": {"$exists": false}}).sort({description: 1}).toArray();
   categories.forEach(function (category) {
     category.id = category._id;
     delete category._id;

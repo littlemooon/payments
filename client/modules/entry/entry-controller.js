@@ -9,7 +9,7 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
     $scope.categories =  categories;
   });
 
-  $scope.newEntry = newEntry;
+  $scope.newEntry = {};
 
   // IO FUNCTIONS
 
@@ -23,7 +23,7 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
     });
 
     // reset new entry
-    $scope.newEntry = newEntry;
+    $scope.newEntry = {};
   };
   $scope.updateEntry = function(entry) {
     EntryService.update(entry);
@@ -54,9 +54,3 @@ angular.module('app.entry').controller('EntryCtrl', function($scope, EntryServic
     });
   };
 });
-
-// OBJECTS
-
-var newEntry = {
-  amount: 0
-};

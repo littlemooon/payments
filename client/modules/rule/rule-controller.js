@@ -52,6 +52,31 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
     // get index of sorted rules
     return _.indexOf($scope.rules, rule)+1;
   };
+  $scope.increasePriority = function(rule) {
+    // move rule within array
+    var index = _.indexOf($scope.rules, rule);
+    if (index > 0) {
+      $scope.rules.splice(index-1, 0, _.remove($scope.rules, rule)[0]);
+
+      // update rule
+      $scope.rules[index-1].next = $scope.rules[index] && $scope.rules[index].id;
+      $scope.rules[index-1].prev = $scope.rules[index-2] && $scope.rules[index-2].id;
+      RuleService.update(rule);
+    }
+  };
+  $scope.decreasePriority = function(rule) {
+    // move rule within array
+    var index = _.indexOf($scope.rules, rule);
+    if (index > 0) {
+      $scope.rules.splice(index+1, 0, _.remove($scope.rules, rule)[0]);
+
+      // update rule
+      $scope.rules[index+1].next = $scope.rules[index+2] && $scope.rules[index+2].id;
+      $scope.rules[index+1].prev = $scope.rules[index] && $scope.rules[index].id;
+      RuleService.update(rule);
+    }
+  };
+
   $scope.getDescription = function(id, collection) {
     // get description property for object in collection with id
     var object = _.filter(collection, { 'id': id })[0];

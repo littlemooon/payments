@@ -7,7 +7,9 @@ angular.module('app.category').controller('CategoryCtrl', function($scope, Categ
       $scope.categories =  categories;
     });
 
-  $scope.newCategory = newCategory;
+  $scope.newCategory = {
+    type: types[0]
+  };
   $scope.types = types;
 
   // IO FUNCTIONS
@@ -22,7 +24,9 @@ angular.module('app.category').controller('CategoryCtrl', function($scope, Categ
     });
 
     // reset new category
-    $scope.newCategory = newCategory;
+    $scope.newCategory = {
+      type: $scope.newCategory.type
+    };
   };
   $scope.updateCategory = function(category) {
     CategoryService.update(category);
@@ -37,7 +41,6 @@ angular.module('app.category').controller('CategoryCtrl', function($scope, Categ
   };
 });
 
+// OBJECTS
+
 var types = ['Outgoing', 'Incoming'];
-var newCategory = {
-  type: types[0]
-};

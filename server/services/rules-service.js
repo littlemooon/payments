@@ -40,6 +40,7 @@ function *createRule(rule) {
   // create new rule record
   rule.createdTime = new Date();
   rule.next = nextRule && nextRule._id;
+  rule.prev = null;
   var results = yield mongo.rules.insert(rule);
 
   // update related rule record
@@ -61,18 +62,20 @@ function *updateRule(id, rule) {
   // get related rules
   var nextRule = yield getRule(rule.next);
   var prevRule = yield getRule(rule.prev);
-  var oldNextRule = yield getRule(oldRule.next);
-  var oldPrevRule = yield getRule(oldRule.prev);
 
   // update rule record
   var results = yield mongo.rules.update({_id: id}, rule);
 
   // update related rules
-  updateRelatedRule(nextRule, 'prev', rule._id);
-  updateRelatedRule(prevRule, 'next', rule._id);
+  yield updateRelatedRule(nextRule, 'prev', id);
+  yield updateRelatedRule(prevRule, 'next', id);
+
+  // update old rules
   if (oldRule) {
-    updateRelatedRule(oldNextRule, 'prev', oldRule.prev);
-    updateRelatedRule(oldPrevRule, 'next', oldRule.next);
+    var oldNextRule = yield getRule(oldRule.next);
+    yield updateRelatedRule(oldNextRule, 'prev', oldRule.prev);
+    var oldPrevRule = yield getRule(oldRule.prev);
+    yield updateRelatedRule(oldPrevRule, 'next', oldRule.next);
   }
 
   return results;
@@ -138,10 +141,10 @@ function *getRule(id) {
   });
 }
 
-function *updateRelatedRule(relatedRule, property, value) {
-  if (relatedRule && relatedRule[property] !== value) {
+function *updateRelatedRule(relatedRule, property, id) {
+  if (relatedRule && relatedRule[property] !== id) {
     relatedRule.updatedTime = new Date();
-    relatedRule[property] = value;
+    relatedRule[property] = id;
     return yield mongo.rules.update({_id: relatedRule._id}, relatedRule);
   }
 }

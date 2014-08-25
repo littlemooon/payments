@@ -17,7 +17,7 @@ module.exports.deleteEntry = deleteEntry;
 
 function *getEntries() {
   // get active entries by date
-  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: 1}).toArray();
+  var entries = yield mongo.entries.find({"deletedTime": {"$exists": false}}).sort({date: -1}).toArray();
   entries.forEach(function (entry) {
     entry.id = entry._id;
     delete entry._id;

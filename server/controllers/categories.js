@@ -18,7 +18,7 @@ exports.init = function (app) {
 
 function *listCategories() {
   // get active categories
-  var categories = yield categoriesService.getAllCategories();
+  var categories = yield categoriesService.getCategories();
 
   // return
   this.body = categories;
