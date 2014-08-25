@@ -30,8 +30,8 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
 
     // reset new rule
     $scope.newRule = {
-      property: $scope.properties[0].id,
-      operator: $scope.operators[0].id
+      property: $scope.newRule.property,
+      operator: $scope.newRule.operator
     };
   };
   $scope.updateRule = function(rule) {

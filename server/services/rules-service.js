@@ -94,10 +94,10 @@ function *deleteRule(id) {
     next: null,
     prev: null
   }});
-
+  console.log('whoooooooooooooooooooooooooo')
   // update related rules
-  updateRelatedRule(nextRule, 'prev', prevRule && prevRule._id);
-  updateRelatedRule(prevRule, 'next', nextRule && nextRule._id);
+  yield updateRelatedRule(nextRule, 'prev', prevRule && prevRule._id);
+  yield updateRelatedRule(prevRule, 'next', nextRule && nextRule._id);
 
   return results;
 }
@@ -142,10 +142,10 @@ function *getRule(id) {
   });
 }
 
-function *updateRelatedRule(relatedRule, property, rule) {
-  if (relatedRule && relatedRule[property] !== rule.value) {
+function *updateRelatedRule(relatedRule, property, value) {
+  if (relatedRule && relatedRule[property] !== value) {
     relatedRule.updatedTime = new Date();
-    relatedRule[property] = rule && rule.value;
+    relatedRule[property] = value;
     return yield mongo.rules.update({_id: relatedRule._id}, relatedRule);
   }
 }
@@ -155,7 +155,7 @@ function *updateEntries(changes) {
 
     // update entries for each category id
     console.log(changes[categoryId].length + ' records changing to ' + categoryId);
-    var result = yield mongo.entries.update({_id: {$in:changes[categoryId]}}, {$set: {
+    yield mongo.entries.update({_id: {$in:changes[categoryId]}}, {$set: {
       categoryId: categoryId,
       updatedTime: new Date()
     }}, {multi: true});
@@ -181,7 +181,7 @@ function updateChanges(changes, rules, entry) {
 
       // add to changes accumulator if rule updates entry category id
       changes[rule.categoryId] = changes[rule.categoryId] || [];
-      changes[rule.categoryId].push(entry._id);
+      changes[rule.categoryId].push(entry.id);
 
       // dont apply any more rules
       return false;
