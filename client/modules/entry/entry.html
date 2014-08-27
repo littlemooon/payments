@@ -21,7 +21,7 @@
     <tr ng-repeat="e in entries">
       <td>{{e.bank | uppercase}}</td>
       <td>{{e.date | date:'dd.MM.yyyy'}}</td>
-      <td>{{e.amount | currency}}</td>
+      <td>{{e.amount | currency: "£"}}</td>
       <td>{{e.description}}</td>
       <td ng-show="isEdit(false)">{{categoryDescription(e)}}</td>
       <td ng-show="isEdit(true)">
