@@ -67,7 +67,7 @@ angular.module('app.rule').controller('RuleCtrl', function($scope, RuleService, 
   $scope.decreasePriority = function(rule) {
     // move rule within array
     var index = _.indexOf($scope.rules, rule);
-    if (index > 0) {
+    if (index < $scope.rules.length-1) {
       $scope.rules.splice(index+1, 0, _.remove($scope.rules, rule)[0]);
 
       // update rule

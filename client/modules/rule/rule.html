@@ -19,7 +19,7 @@
       <td><input type="text" ng-model="newRule.value" money type="number" class="form-control input-sm"/></td>
       <td>=</td>
       <td><select ng-model="newRule.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" class="form-control input-sm"></select></td>
-      <td><button type="button" class="btn btn-success" ng-click="addRule(newRule)">Add</button></td>
+      <td><button type="button" class="btn btn-success glyphicon glyphicon-plus" ng-click="addRule(newRule)"></button></td>
       <th ng-show="isEdit(true)"></th>
     </tr>
     <tr ng-repeat="r in rules">
@@ -35,7 +35,7 @@
       <td ng-show="isEdit(true)">
         <select ng-model="r.categoryId" ng-selected="0" ng-options="c.id as c.description for c in categories" ng-blur="updateRule(r)" class="form-control input-sm"></select>
       </td>
-      <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger" ng-click="deleteRule(r)">Delete</button></td>
+      <td ng-show="isEdit(true)"><button type="button" class="btn btn-danger glyphicon glyphicon-remove" ng-click="deleteRule(r)"></button></td>
       <td ng-show="isEdit(true)">
         <button type="button" class="glyphicon glyphicon-arrow-up btn btn-default" ng-click="increasePriority(r)"></button> 
         <button type="button" class="glyphicon glyphicon-arrow-down btn btn-default" ng-click="decreasePriority(r)"></button>

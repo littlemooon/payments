@@ -21,11 +21,6 @@ function *getRules() {
     rule.id = rule._id;
     delete rule._id;
   });
-  console.log('rules = ');
-  console.log(rules);
-  var sortedRules = sortRules(rules);
-  console.log('sorted = ');
-  console.log(sortedRules);
 
   return sortRules(rules);
 }
@@ -60,8 +55,8 @@ function *updateRule(id, rule) {
   var oldRule = yield getRule(id);
 
   // get related rules
-  var nextRule = yield getRule(rule.next);
-  var prevRule = yield getRule(rule.prev);
+  var nextRule = yield getRule(ObjectID(rule.next));
+  var prevRule = yield getRule(ObjectID(rule.prev));
 
   // update rule record
   var results = yield mongo.rules.update({_id: id}, rule);
@@ -119,18 +114,25 @@ function *applyRules(entries) {
 // FUNCTIONS
 
 function sortRules(rules) {
-  // sort by priority
-  var sortedRules = [];
-  rules.forEach(function (rule) {
-    if (!rule.next) {
-      sortedRules.push(rule);
-    } else {
-      var index = _.indexOf(sortedRules, _.filter(sortedRules, function(sortedRule) {
-        return sortedRule.id.toString() === rule.next.toString();
-      })[0]);
-      sortedRules.splice(index, 0, rule);
-    }
-  });
+  if (rules.length === 0) return [];
+
+  // transform properties to expose id
+  var rulesById = _.reduce(rules, function(rulesById, rule) {
+    rulesById[rule.id] = rule;
+    return rulesById;
+  }, {});
+
+  // add first property
+  var sortedRules = [
+    _.filter(rules, function(rule) {
+      return !rule.prev;
+    })[0]
+  ];
+
+  // add each property that matches the previous property's 'next'
+  for (var i = 0; i < rules.length-1; i++) {
+    sortedRules.push(rulesById[sortedRules[sortedRules.length-1].next.toString()]);
+  }
   return sortedRules;
 }
 
